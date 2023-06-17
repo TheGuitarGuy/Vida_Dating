@@ -6,12 +6,20 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseStorage
+import UIKit
 
 @main
 struct Vida_DatingApp: App {
+    init() {
+        FirebaseApp.configure()
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor(Color.vidaWhite)]
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SignUpView()
         }
     }
 }
