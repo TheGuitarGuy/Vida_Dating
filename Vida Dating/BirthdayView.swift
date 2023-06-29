@@ -15,7 +15,7 @@ struct BirthdayView: View {
     @State private var showAlert = false
     @State private var navigateToNameView = false
     
-    private let db = Firestore.firestore() 
+    private let db = Firestore.firestore()
     
     var body: some View {
         NavigationView {
@@ -102,5 +102,3 @@ struct BirthdayView_Previews: PreviewProvider {
         BirthdayView()
     }
 }
-
-

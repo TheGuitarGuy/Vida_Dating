@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DC1CC6F92A1191C800B53B47 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC1CC6F82A1191C800B53B47 /* GoogleService-Info.plist */; };
+		DC2620E62A47866A00BB34E2 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2620E52A47866A00BB34E2 /* SignupView.swift */; };
 		DC432B9D2A01A5E200ECA31F /* PersonalProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC432B9C2A01A5E200ECA31F /* PersonalProfileView.swift */; };
 		DC432BA12A08C97E00ECA31F /* vida animation.gif in Resources */ = {isa = PBXBuildFile; fileRef = DC432BA02A08C97E00ECA31F /* vida animation.gif */; };
 		DC432BA32A08C9EB00ECA31F /* gifLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC432BA22A08C9EB00ECA31F /* gifLoader.swift */; };
@@ -52,7 +53,7 @@
 		DCC51BD629F0BC2B003A51DA /* FirebaseRemoteConfigSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DCC51BD529F0BC2B003A51DA /* FirebaseRemoteConfigSwift */; };
 		DCC51BD829F0BC2B003A51DA /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = DCC51BD729F0BC2B003A51DA /* FirebaseStorage */; };
 		DCC51BDA29F0BC2B003A51DA /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = DCC51BD929F0BC2B003A51DA /* FirebaseStorageCombine-Community */; };
-		DCC51BF429F0BD92003A51DA /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC51BDC29F0BD8A003A51DA /* LoginView.swift */; };
+		DCC51BF429F0BD92003A51DA /* EmailLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC51BDC29F0BD8A003A51DA /* EmailLoginView.swift */; };
 		DCC51BF729F0BD92003A51DA /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC51BDF29F0BD8A003A51DA /* HomeView.swift */; };
 		DCC51BF829F0BD92003A51DA /* DateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC51BE029F0BD8B003A51DA /* DateHelpers.swift */; };
 		DCC51BF929F0BD92003A51DA /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC51BE129F0BD8B003A51DA /* ProfileView.swift */; };
@@ -63,7 +64,7 @@
 		DCC51C0129F0BD92003A51DA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCC51BE929F0BD8F003A51DA /* LaunchScreen.storyboard */; };
 		DCC51C0529F0BD92003A51DA /* PersonalityTraitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC51BED29F0BD90003A51DA /* PersonalityTraitsView.swift */; };
 		DCC51C0729F0BD92003A51DA /* TitleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC51BEF29F0BD91003A51DA /* TitleRow.swift */; };
-		DCC51C0829F0BD92003A51DA /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC51BF029F0BD91003A51DA /* SignUpView.swift */; };
+		DCC51C0829F0BD92003A51DA /* EmailSignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC51BF029F0BD91003A51DA /* EmailSignupView.swift */; };
 		DCC51C0929F0BD92003A51DA /* AboutMeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC51BF129F0BD91003A51DA /* AboutMeView.swift */; };
 		DCC51C0E29F0BE38003A51DA /* Vida_Logomark.png in Resources */ = {isa = PBXBuildFile; fileRef = DCC51C0B29F0BE34003A51DA /* Vida_Logomark.png */; };
 		DCC51C0F29F0BE38003A51DA /* profile.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = DCC51C0C29F0BE35003A51DA /* profile.jpeg */; };
@@ -74,6 +75,8 @@
 
 /* Begin PBXFileReference section */
 		DC1CC6F82A1191C800B53B47 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Carnegie Mellon/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DC2620E52A47866A00BB34E2 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
+		DC2620E72A478B8A00BB34E2 /* Vida Dating.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Vida Dating.entitlements"; sourceTree = "<group>"; };
 		DC432B9C2A01A5E200ECA31F /* PersonalProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalProfileView.swift; sourceTree = "<group>"; };
 		DC432BA02A08C97E00ECA31F /* vida animation.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "vida animation.gif"; sourceTree = "<group>"; };
 		DC432BA22A08C9EB00ECA31F /* gifLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gifLoader.swift; sourceTree = "<group>"; };
@@ -88,7 +91,7 @@
 		DCC51B9829F0BA67003A51DA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DCC51B9A29F0BA69003A51DA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DCC51B9D29F0BA69003A51DA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		DCC51BDC29F0BD8A003A51DA /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		DCC51BDC29F0BD8A003A51DA /* EmailLoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailLoginView.swift; sourceTree = "<group>"; };
 		DCC51BDF29F0BD8A003A51DA /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		DCC51BE029F0BD8B003A51DA /* DateHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateHelpers.swift; sourceTree = "<group>"; };
 		DCC51BE129F0BD8B003A51DA /* ProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -99,7 +102,7 @@
 		DCC51BE929F0BD8F003A51DA /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DCC51BED29F0BD90003A51DA /* PersonalityTraitsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalityTraitsView.swift; sourceTree = "<group>"; };
 		DCC51BEF29F0BD91003A51DA /* TitleRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleRow.swift; sourceTree = "<group>"; };
-		DCC51BF029F0BD91003A51DA /* SignUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		DCC51BF029F0BD91003A51DA /* EmailSignupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailSignupView.swift; sourceTree = "<group>"; };
 		DCC51BF129F0BD91003A51DA /* AboutMeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutMeView.swift; sourceTree = "<group>"; };
 		DCC51C0B29F0BE34003A51DA /* Vida_Logomark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Vida_Logomark.png; sourceTree = "<group>"; };
 		DCC51C0C29F0BE35003A51DA /* profile.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = profile.jpeg; sourceTree = "<group>"; };
@@ -169,17 +172,19 @@
 		DCC51B9529F0BA67003A51DA /* Vida Dating */ = {
 			isa = PBXGroup;
 			children = (
+				DC2620E72A478B8A00BB34E2 /* Vida Dating.entitlements */,
 				DC1CC6F82A1191C800B53B47 /* GoogleService-Info.plist */,
 				DCC51B9629F0BA67003A51DA /* Vida_DatingApp.swift */,
 				DCC51B9829F0BA67003A51DA /* ContentView.swift */,
 				DCC51BF129F0BD91003A51DA /* AboutMeView.swift */,
+				DC2620E52A47866A00BB34E2 /* SignupView.swift */,
 				DCC51BE229F0BD8C003A51DA /* BirthdayView.swift */,
 				DCC51BE029F0BD8B003A51DA /* DateHelpers.swift */,
 				DCC51BDF29F0BD8A003A51DA /* HomeView.swift */,
 				DC432BA22A08C9EB00ECA31F /* gifLoader.swift */,
 				DC432BA42A08CE9100ECA31F /* Launch.swift */,
 				DCC51BE929F0BD8F003A51DA /* LaunchScreen.storyboard */,
-				DCC51BDC29F0BD8A003A51DA /* LoginView.swift */,
+				DCC51BDC29F0BD8A003A51DA /* EmailLoginView.swift */,
 				DC8E39E429F249DE004CFEBD /* ConversationsView.swift */,
 				DC8E39F829F5BF42004CFEBD /* ConversationView.swift */,
 				DC8E39EF29F39F87004CFEBD /* ChatLogViewModel.swift */,
@@ -193,7 +198,7 @@
 				DCC51BE129F0BD8B003A51DA /* ProfileView.swift */,
 				DC432B9C2A01A5E200ECA31F /* PersonalProfileView.swift */,
 				DC8E39F629F5B309004CFEBD /* UserProfileImageLoader.swift */,
-				DCC51BF029F0BD91003A51DA /* SignUpView.swift */,
+				DCC51BF029F0BD91003A51DA /* EmailSignupView.swift */,
 				DCC51BEF29F0BD91003A51DA /* TitleRow.swift */,
 				DCC51B9A29F0BA69003A51DA /* Assets.xcassets */,
 				DC432BA02A08C97E00ECA31F /* vida animation.gif */,
@@ -335,11 +340,12 @@
 				DCC51BFC29F0BD92003A51DA /* MainView.swift in Sources */,
 				DCC51BF929F0BD92003A51DA /* ProfileView.swift in Sources */,
 				DCC51BF729F0BD92003A51DA /* HomeView.swift in Sources */,
-				DCC51C0829F0BD92003A51DA /* SignUpView.swift in Sources */,
+				DCC51C0829F0BD92003A51DA /* EmailSignupView.swift in Sources */,
 				DC8E39F929F5BF42004CFEBD /* ConversationView.swift in Sources */,
+				DC2620E62A47866A00BB34E2 /* SignupView.swift in Sources */,
 				DCC51C0029F0BD92003A51DA /* NameView.swift in Sources */,
 				DC432BA52A08CE9100ECA31F /* Launch.swift in Sources */,
-				DCC51BF429F0BD92003A51DA /* LoginView.swift in Sources */,
+				DCC51BF429F0BD92003A51DA /* EmailLoginView.swift in Sources */,
 				DCC51C0729F0BD92003A51DA /* TitleRow.swift in Sources */,
 				DCC51C0929F0BD92003A51DA /* AboutMeView.swift in Sources */,
 				DC8E39F029F39F87004CFEBD /* ChatLogViewModel.swift in Sources */,
@@ -478,6 +484,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = "Vida Dating/Vida Dating.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Vida Dating/Preview Content\"";
@@ -510,6 +517,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = "Vida Dating/Vida Dating.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Vida Dating/Preview Content\"";

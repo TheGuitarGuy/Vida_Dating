@@ -20,6 +20,7 @@ struct PhotoUploadView: View {
     @State private var userProfileImageURLs: [URL?] = [nil, nil, nil, nil, nil, nil]
     @State private var updatedImages: [UIImage?] = []
     @State private var updatedImageIndices: [Int] = []
+    @State private var changedImageIndices: [Int] = []
     
     let vidaPink = Color(red: 231/255, green: 83/255, blue: 136/255)
     
@@ -88,8 +89,8 @@ struct PhotoUploadView: View {
             
             let group = DispatchGroup() // create a dispatch group to wait for all uploads to finish
             
-            for (index, image) in selectedImages.enumerated() {
-                if let imageData = image?.jpegData(compressionQuality: 0.5) {
+            for index in changedImageIndices {
+                if let image = selectedImages[index], let imageData = image.jpegData(compressionQuality: 0.5) {
                     let imageName = "image\(index).jpg"
                     let imageRef = storageRef.child("users/\(userID)/\(imageName)")
                     
@@ -130,6 +131,9 @@ struct PhotoUploadView: View {
                 let alert = UIAlertController(title: "Photos Saved!!", message: nil, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 UIApplication.shared.windows.first?.rootViewController?.present(alert, animated: true, completion: nil)
+                
+                // Clear the changedImageIndices array now that we've saved the changes
+                changedImageIndices.removeAll()
             }
             
             saveButtonTapped = false
@@ -189,6 +193,7 @@ struct PhotoUploadView: View {
     
     private func updateSelectedImage(image: UIImage, index: Int) {
         selectedImages[index] = image
+        changedImageIndices.append(index)
     }
     struct ImageView: View {
         let url: URL?
@@ -266,4 +271,3 @@ struct PhotoUploadView: View {
         }
     }
 }
-

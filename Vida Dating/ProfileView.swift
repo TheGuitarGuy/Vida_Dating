@@ -23,7 +23,7 @@ struct ProfileView: View {
         NavigationView {
             ZStack {
                 Color(red: 30/255, green: 30/255, blue: 60/255)
-                    .ignoresSafeArea()
+                    .edgesIgnoringSafeArea(.all)
                 VStack {
                     Spacer()
 

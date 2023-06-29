@@ -24,7 +24,7 @@ struct AboutMeView: View {
     var body: some View {
         ZStack {
             Color(red: 30/255, green: 30/255, blue: 60/255)
-                .ignoresSafeArea()
+                .edgesIgnoringSafeArea(.all)
             
             VStack {
                 Image("Vida_Logomark")
@@ -36,7 +36,7 @@ struct AboutMeView: View {
                     .font(.title)
                     .padding(.vertical, 20)
                 UITextViewWrapper(text: $bioText, characterCount: $characterCount)
-                    .background(Color(red: 30/255, green: 30/255, blue: 60/255))
+                Color(red: 30/255, green: 30/255, blue: 60/255)
                     .multilineTextAlignment(.leading)
                     .frame(height: 200)
                     .padding(10)

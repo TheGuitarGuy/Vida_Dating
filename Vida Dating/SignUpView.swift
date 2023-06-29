@@ -1,222 +1,146 @@
-
-
+//
+//  SignupView.swift
+//  Vida Dating
+//
+//  Created by Kennion Gubler on 6/24/23.
+//
 import SwiftUI
-import Firebase
-import FirebaseAuth
-import FirebaseFirestore
 import AuthenticationServices
-import FirebaseStorage
+import FirebaseAuth
+import CryptoKit
 
-struct SignUpView: View {
-    
-    @State private var firstName = ""
-    @State private var lastName = ""
-    @State private var id = ""
-    @State private var email = ""
-    @State private var password = ""
-    @State private var confirmPassword = ""
-    @State private var isSignedUp = false
-    @State private var errorMessage = ""
-    @State private var showAlert = false
-    @State private var showingLogin = false
-    
+// Define the navigation targets
+enum NavigationTarget {
+    case main
+    case birthday
+    case emailLogin
+    case none
+}
+
+struct SignupView: View {
+    @State private var currentNonce: String?
+    @State private var navigateToView: NavigationTarget = .none
+    @State private var showMain = false
+    @State private var showBirthday = false
+    @State private var showEmailLogin = false
+
     var body: some View {
-        NavigationStack
-        {
-            ZStack
-            {
-                Color(red: 30/255, green: 30/255, blue: 60/255)
-                    .edgesIgnoringSafeArea(.all)
-                VStack {
-                    Image("Vida_Logomark")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: 100)
-                        .padding(.top, 25)
-                        .padding(.bottom, 50)
-                        .padding(.horizontal)
-                    Text("Sign Up")
-                        .font(.title)
-                        .foregroundColor(.white)
-                    
-                    HStack {
-                        TextField("", text: $email)
-                            .modifier(PlaceholderStyle(showPlaceHolder: email.isEmpty,
-                                                       placeholder: "Email"))
-                    }
-                    .padding(.vertical)
-                    .underlineTextField()
-                    
-                    
-                    HStack {
-                        SecureField("Search", text: $password)
-                            .modifier(PlaceholderStyle(showPlaceHolder: password.isEmpty,
-                                                       placeholder: "Password"))
-                    }
-                    .padding(.vertical)
-                    .underlineTextField()
-                    HStack {
-                        SecureField("Search", text: $confirmPassword)
-                            .modifier(PlaceholderStyle(showPlaceHolder: confirmPassword.isEmpty,
-                                                       placeholder: "Confirm Password"))
-                    }
-                    .padding(.vertical)
-                    .underlineTextField()
-                    
-                    Button(action: {
-                        register()
-                    }
-                    ) {
-                        Text("Sign Up")
-                            .padding()
-                            .padding(.horizontal, 30)
-                            .foregroundColor(.vidaWhite)
-                            .background(Color(red: 244/255, green: 11/255, blue: 114/255))
-                            .cornerRadius(30)
-                            .font(Font.system(size: 20))
-                            .bold()
-                    }
-                    .padding(.bottom, 50)
-                    .padding(.top, 50)
-                    
-                    NavigationLink(destination: BirthdayView(), isActive: $isSignedUp) {
-                        EmptyView()
-                    }
-                    HStack {
-                        Text("Already have an account?")
-                            .foregroundColor(.blue)
-                        Button(action: {
-                            showingLogin = true
-                        }) {
-                            Text("Sign In")
-                                .foregroundColor(.vidaPink)
+        NavigationStack {
+            VStack {
+                NavigationLink(destination: MainView(), isActive: $showMain) {
+                    EmptyView()
+                }
+
+                NavigationLink(destination: BirthdayView(), isActive: $showBirthday) {
+                    EmptyView()
+                }
+
+                NavigationLink(destination: EmailLoginView(), isActive: $showEmailLogin) {
+                    EmptyView()
+                }
+
+                SignInWithAppleButton(.signIn, onRequest: { request in
+                    let nonce = randomNonceString()
+                    currentNonce = nonce
+                    request.nonce = sha256(nonce)
+                }, onCompletion: { result in
+                    switch result {
+                    case .success(let authorization):
+                        guard let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential else {
+                            return
                         }
-                        NavigationLink(destination: LoginView(), isActive: $showingLogin) {
-                            EmptyView()
+                        guard let nonce = currentNonce else {
+                            print("Invalid state: A login callback was received, but no login request was sent.")
+                            return
                         }
-                    }
-                    .padding(.bottom, 15)
-                }
-                
-                .alert(isPresented: $showAlert) {
-                    Alert(
-                        title: Text("Sorry!"),
-                        message: Text(errorMessage),
-                        dismissButton: .default(Text("OK"))
-                    )
-                }
-            }
-
-        }
-    }
-    
-    func register() {
-        guard password == confirmPassword else {
-            self.errorMessage = "Passwords do not match"
-            showAlert = true
-            return
-        }
-        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-            if let error = error as NSError? {
-                if let errorCode = AuthErrorCode.Code(rawValue: error.code) {
-                    switch errorCode {
-                    case .emailAlreadyInUse:
-                        self.errorMessage = "Email address already in use"
-                        showAlert = true
-
-                    case .invalidEmail:
-                        self.errorMessage = "Invalid email address"
-                        showAlert = true
-                    case .weakPassword:
-                        self.errorMessage = "Password is too weak"
-                        showAlert = true
-                        
-                    default:
-                        print("Other error occurred: \(error.localizedDescription)")
-                        print("Error domain: \(error.domain)")
-                        print("Error code: \(error.code)")
-                        print("User info: \(error.userInfo)")
-                        showAlert = true
-                    }
-                }
-            
-                else {
-                    print("Error registering user: \(error.localizedDescription)")
-                    showAlert = true
-
-                }
-            }
-            else {
-                // User created successfully
-                print("User registered successfully")
-
-                // Save user data to Firestore
-                let db = Firestore.firestore()
-                if let userId = authResult?.user.uid {
-                    let userDoc = db.collection("users").document(userId)
-                    let userData = ["id": id, "email": email, "password": password]
-                    userDoc.setData(userData) { error in
-                        if let error = error {
-                            print("Error saving user data: \(error.localizedDescription)")
-                        } else {
-                            print("User data saved successfully")
-                            self.isSignedUp = true // Navigate to BirthdayView
+                        guard let appleIDToken = appleIDCredential.identityToken else {
+                            print("Unable to fetch identity token")
+                            return
                         }
+                        guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+                            print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+                            return
+                        }
+
+                        let firebaseCredential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
+                        Auth.auth().signIn(with: firebaseCredential) { (authResult, error) in
+                            DispatchQueue.main.async {
+                                if let error = error {
+                                    print(error.localizedDescription)
+                                    return
+                                }
+
+                                if let isNewUser = authResult?.additionalUserInfo?.isNewUser {
+                                    if isNewUser {
+                                        print("Navigating to Birthday View")
+                                        self.navigateToView = .birthday
+                                        self.showBirthday = true
+                                    } else {
+                                        print("Navigating to Main View")
+                                        self.navigateToView = .main
+                                        self.showMain = true
+                                    }
+                                }
+                            }
+                        }
+                    case .failure(let error):
+                        print(error.localizedDescription)
                     }
-                } else {
-                    print("Error: authResult is nil")
+                }).frame(width: 280, height: 45, alignment: .center)
+
+                Button("Log in with Email") {
+                    self.navigateToView = .emailLogin
+                    self.showEmailLogin = true
+                }.foregroundColor(.blue)
+            }
+        }
+    }
+
+    func randomNonceString(length: Int = 32) -> String {
+        precondition(length > 0)
+        let charset: Array<Character> =
+            Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+        var result = ""
+        var remainingLength = length
+
+        while remainingLength > 0 {
+            let randoms: [UInt8] = (0 ..< 16).map { _ in
+                var random: UInt8 = 0
+                let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
+                if errorCode != errSecSuccess {
+                    fatalError("Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)")
+                }
+                return random
+            }
+
+            randoms.forEach { random in
+                if remainingLength == 0 {
+                    return
+                }
+
+                if random < charset.count {
+                    result.append(charset[Int(random)])
+                    remainingLength -= 1
                 }
             }
         }
+
+        return result
+    }
+
+    private func sha256(_ input: String) -> String {
+        let inputData = Data(input.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        let hashString = hashedData.compactMap {
+            return String(format: "%02x", $0)
+        }.joined()
+
+        return hashString
     }
 }
-extension Color {
-    static let darkPink = Color(red: 208 / 255, green: 45 / 255, blue: 208 / 255)
-    static let vidaWhite = Color(red: 242 / 255, green: 245 / 255, blue: 255 / 255)
-    static let vidaBackground = Color(red: 30/255, green: 30/255, blue: 60/255)
-    static let vidaPink = Color(red: 244/255, green: 11/255, blue: 114/255)
-    static let vidaOrange = Color(red: 244/255, green: 11/255, blue: 114/255)
-}
-extension View {
-    func underlineTextField() -> some View {
-        self
-            .padding(.vertical, 10)
-            .overlay(Rectangle().frame(height: 2).padding(.top, 35))
-            .foregroundColor(.vidaWhite)
-            .padding(.horizontal, 20)
-            .accentColor(.vidaWhite)
-    }
-    func placeholder<Content: View>(
-        when shouldShow: Bool,
-        alignment: Alignment = .leading,
-        @ViewBuilder placeholder: () -> Content) -> some View {
 
-        ZStack(alignment: alignment) {
-            placeholder().opacity(shouldShow ? 1 : 0)
-            self
-        }
+struct SignupView_Previews: PreviewProvider {
+    static var previews: some View {
+        SignupView()
     }
 }
-public struct PlaceholderStyle: ViewModifier {
-    var showPlaceHolder: Bool
-    var placeholder: String
-
-    public func body(content: Content) -> some View {
-        ZStack(alignment: .leading) {
-            if showPlaceHolder {
-                Text(placeholder)
-                    .foregroundColor(Color.gray)
-            }
-            content
-            .foregroundColor(Color.white)
-        }
-    }
-}
-    struct SignUpView_Previews: PreviewProvider {
-        static var previews: some View {
-            SignUpView()
-        }
-    }
-
-
-

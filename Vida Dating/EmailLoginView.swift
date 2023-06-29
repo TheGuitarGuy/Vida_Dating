@@ -8,7 +8,7 @@
 import SwiftUI
 import FirebaseAuth
 
-struct LoginView: View {
+struct EmailLoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var isPasswordSecure: Bool = true
@@ -29,7 +29,7 @@ struct LoginView: View {
                 
                 Text("Login")
                     .font(.largeTitle)
-                    .foregroundColor(.white)
+                    .foregroundColor(.vidaWhite)
                 
                 VStack {
                     TextField("Email", text: $email)
@@ -81,7 +81,7 @@ struct LoginView: View {
                         Text("Sign Up")
                             .foregroundColor(.vidaPink)
                     }
-                    NavigationLink(destination: SignUpView(), isActive: $showingSignup) {
+                    NavigationLink(destination: SignupView(), isActive: $showingSignup) {
                         EmptyView()
                     }
                 }
@@ -109,8 +109,8 @@ func loginUser(email: String, password: String, completion: @escaping (Result<Us
     }
 }
 
-struct LoginView_Previews: PreviewProvider {
+struct EmailLoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView()
+        EmailLoginView()
     }
 }

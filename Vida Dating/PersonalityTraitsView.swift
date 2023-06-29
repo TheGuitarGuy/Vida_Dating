@@ -100,7 +100,7 @@ struct PersonalityTraitsView: View {
                         }
                         .background(
                             NavigationLink(
-                                destination:LoginView(),
+                                destination:EmailLoginView(),
                                 isActive: $navigateToPhotoUploadView,
                                 label: {
                                     EmptyView()

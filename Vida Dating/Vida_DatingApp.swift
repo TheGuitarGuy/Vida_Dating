@@ -19,7 +19,7 @@ struct Vida_DatingApp: App {
     
     var body: some Scene {
         WindowGroup {
-            SignUpView()
+            SignupView()
         }
     }
 }
