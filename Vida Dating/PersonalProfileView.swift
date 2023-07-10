@@ -15,72 +15,100 @@ struct PersonalProfileView: View {
     @State private var userProfileImageURLs: [URL?] = []
     @State private var userName: String = ""
     @State private var userAge: Int = 0
+    @State private var userBio: String = "" // New: Bio text state
     @State private var isLoadingImage = false
-    
+
     var body: some View {
         ZStack {
-            Color(red: 30/255, green: 30/255, blue: 60/255)
+            Color(red: 54/255, green: 54/255, blue: 122/255)
                 .edgesIgnoringSafeArea(.all)
             GeometryReader { geometry in
-                VStack {
-                    if isLoadingImage {
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle())
-                    } else {
-                        if userProfileImageURLs.isEmpty {
-                            Text("No images to display.")
+                ScrollView {
+                    VStack {
+                        if isLoadingImage {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
                         } else {
-                            if let url = userProfileImageURLs[selectedImageIndex] {
-                                WebImage(url: url)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: geometry.size.width, height: geometry.size.height * 0.9)  // Adjust the 0.9 to your liking
-                                    .clipped()
-                                    .overlay(
-                                        VStack {
-                                            Spacer()
-                                            LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0.95), Color.black.opacity(0)]), startPoint: .bottom, endPoint: .top)
-                                                .frame(maxHeight: UIScreen.main.bounds.height / 3)
-                                        }
-                                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-                                    )
-                                    .overlay(
-                                        VStack {
-                                            Spacer()
-                                            HStack {
-                                                VStack(alignment: .leading) {
-                                                    Text("\(userName), \(userAge)")
-                                                        .font(.system(size: 40, weight: .semibold, design: .rounded))
-                                                        .foregroundColor(.white)
-                                                    HStack(alignment: .center, spacing: 10) {
-                                                        ForEach(userProfileImageURLs.indices) { index in
-                                                            Circle()
-                                                                .frame(width: 10, height: 10)
-                                                                .foregroundColor(index == selectedImageIndex ? Color.vidaPink : Color.white)
+                            if userProfileImageURLs.isEmpty {
+                                Text("No images to display.")
+                            } else {
+                                if let url = userProfileImageURLs[selectedImageIndex] {
+                                    WebImage(url: url)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: geometry.size.width, height: geometry.size.height * 0.9)  // Adjust the 0.9 to your liking
+                                        .clipped()
+                                        .overlay(
+                                            VStack {
+                                                Spacer()
+                                                LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0.95), Color.black.opacity(0)]), startPoint: .bottom, endPoint: .top)
+                                                    .frame(maxHeight: UIScreen.main.bounds.height / 3)
+                                            }
+                                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                                        )
+                                        .overlay(
+                                            VStack {
+                                                Spacer()
+                                                HStack {
+                                                    VStack(alignment: .leading) {
+                                                        Text("\(userName), \(userAge)")
+                                                            .font(.system(size: 40, weight: .semibold, design: .rounded))
+                                                            .foregroundColor(.white)
+                                                        HStack(alignment: .center, spacing: 10) {
+                                                            ForEach(userProfileImageURLs.indices) { index in
+                                                                Circle()
+                                                                    .frame(width: 10, height: 10)
+                                                                    .foregroundColor(index == selectedImageIndex ? Color.vidaPink : Color.white)
+                                                            }
                                                         }
                                                     }
+                                                    Spacer()
                                                 }
-                                                Spacer()
-                                            }
-                                        }.padding()
-                                    )
-                                    .edgesIgnoringSafeArea(.all)
-                                    .onTapGesture {
-                                        selectedImageIndex = (selectedImageIndex + 1) % userProfileImageURLs.count
-                                    }
-                            } else {
-                                Color.gray
-                                    .edgesIgnoringSafeArea(.all)
+                                            }.padding()
+                                        )
+                                        .edgesIgnoringSafeArea(.all)
+                                        .onTapGesture {
+                                            selectedImageIndex = (selectedImageIndex + 1) % userProfileImageURLs.count
+                                        }
+                                } else {
+                                    Color.gray
+                                        .frame(width: geometry.size.width, height: geometry.size.height * 0.9)
+                                        .clipped()
+                                }
                             }
                         }
+
+                        if !isLoadingImage {
+                            HStack {
+                                Text("Bio:")
+                                    .font(.system(size: 25, weight: .bold, design: .rounded))
+                                    .foregroundColor(.white)
+                                    .padding(.leading)
+                                
+                                Spacer()
+                            }
+                            
+                            HStack {
+                                Text(userBio)
+                                    .font(.system(size: 20, weight: .semibold, design: .rounded))
+                                    .foregroundColor(.white)
+                                    .multilineTextAlignment(.leading)
+                                    .padding(.leading)
+                                
+                                Spacer()
+                            }
+                        }
+
+
+
+                        Spacer()
                     }
-                    Spacer()
+                    .onAppear(perform: loadUserProfileImageURLsFromFirestore)
                 }
-                .onAppear(perform: loadUserProfileImageURLsFromFirestore)
             }
         }
     }
-    
+
     private func loadUserProfileImageURLsFromFirestore() {
         isLoadingImage = true
         let db = Firestore.firestore()
@@ -97,15 +125,17 @@ struct PersonalProfileView: View {
                 } else {
                     print("No photoURLs found for user.")
                 }
-                
+
                 self.userName = document.data()?["name"] as? String ?? "No name"
                 self.userAge = document.data()?["age"] as? Int ?? 0
+                self.userBio = document.data()?["bioText"] as? String ?? "No bio" // New: Fetching bio text
             } else {
                 print("User document not found.")
             }
         }
     }
 }
+
 
 struct PersonalProfileView_Previews: PreviewProvider {
     static var previews: some View {

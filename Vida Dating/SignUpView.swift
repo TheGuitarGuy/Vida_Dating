@@ -26,72 +26,104 @@ struct SignupView: View {
 
     var body: some View {
         NavigationStack {
-            VStack {
-                NavigationLink(destination: MainView(), isActive: $showMain) {
-                    EmptyView()
-                }
+            ZStack{
+                Color(red: 54/255, green: 54/255, blue: 122/255)
+                    .edgesIgnoringSafeArea(.all)
+                
+                VStack {
+                    Image("Pod_Logo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: 500)
+                        .padding(.top, 25)
+                        .padding(.bottom, 50)
+                        .padding(.horizontal)
 
-                NavigationLink(destination: BirthdayView(), isActive: $showBirthday) {
-                    EmptyView()
-                }
+                    NavigationLink(destination: MainView(), isActive: $showMain) {
+                        EmptyView()
+                    }
 
-                NavigationLink(destination: EmailLoginView(), isActive: $showEmailLogin) {
-                    EmptyView()
-                }
+                    NavigationLink(destination: BirthdayView(), isActive: $showBirthday) {
+                        EmptyView()
+                    }
 
-                SignInWithAppleButton(.signIn, onRequest: { request in
-                    let nonce = randomNonceString()
-                    currentNonce = nonce
-                    request.nonce = sha256(nonce)
-                }, onCompletion: { result in
-                    switch result {
-                    case .success(let authorization):
-                        guard let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential else {
-                            return
-                        }
-                        guard let nonce = currentNonce else {
-                            print("Invalid state: A login callback was received, but no login request was sent.")
-                            return
-                        }
-                        guard let appleIDToken = appleIDCredential.identityToken else {
-                            print("Unable to fetch identity token")
-                            return
-                        }
-                        guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
-                            print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
-                            return
-                        }
+                    NavigationLink(destination: EmailLoginView(), isActive: $showEmailLogin) {
+                        EmptyView()
+                    }
 
-                        let firebaseCredential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
-                        Auth.auth().signIn(with: firebaseCredential) { (authResult, error) in
-                            DispatchQueue.main.async {
-                                if let error = error {
-                                    print(error.localizedDescription)
-                                    return
-                                }
+                    SignInWithAppleButton(.signIn, onRequest: { request in
+                        let nonce = randomNonceString()
+                        currentNonce = nonce
+                        request.nonce = sha256(nonce)
+                    }, onCompletion: { result in
+                        switch result {
+                        case .success(let authorization):
+                            guard let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential else {
+                                return
+                            }
+                            guard let nonce = currentNonce else {
+                                print("Invalid state: A login callback was received, but no login request was sent.")
+                                return
+                            }
+                            guard let appleIDToken = appleIDCredential.identityToken else {
+                                print("Unable to fetch identity token")
+                                return
+                            }
+                            guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+                                print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+                                return
+                            }
 
-                                if let isNewUser = authResult?.additionalUserInfo?.isNewUser {
-                                    if isNewUser {
-                                        print("Navigating to Birthday View")
-                                        self.navigateToView = .birthday
-                                        self.showBirthday = true
-                                    } else {
-                                        print("Navigating to Main View")
-                                        self.navigateToView = .main
-                                        self.showMain = true
+                            let firebaseCredential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
+                            Auth.auth().signIn(with: firebaseCredential) { (authResult, error) in
+                                DispatchQueue.main.async {
+                                    if let error = error {
+                                        print(error.localizedDescription)
+                                        return
+                                    }
+
+                                    if let isNewUser = authResult?.additionalUserInfo?.isNewUser {
+                                        if isNewUser {
+                                            print("Navigating to Birthday View")
+                                            self.navigateToView = .birthday
+                                            self.showBirthday = true
+                                        } else {
+                                            print("Navigating to Main View")
+                                            self.navigateToView = .main
+                                            self.showMain = true
+                                        }
                                     }
                                 }
                             }
+                        case .failure(let error):
+                            print(error.localizedDescription)
                         }
-                    case .failure(let error):
-                        print(error.localizedDescription)
+                    })
+                    .signInWithAppleButtonStyle(.white)
+                    .frame(width: 280, height: 45, alignment: .center)
+                    
+                    Button("Continue with Facebook") {
+                        self.navigateToView = .emailLogin
+                        self.showEmailLogin = true
                     }
-                }).frame(width: 280, height: 45, alignment: .center)
-
-                Button("Log in with Email") {
-                    self.navigateToView = .emailLogin
-                    self.showEmailLogin = true
-                }.foregroundColor(.blue)
+                    .foregroundColor(.white)
+                    .frame(width: 280, height: 45, alignment: .center)
+                    .background(Color.blue)
+                    .cornerRadius(7.5)
+                    .fontWeight(.bold)
+                    
+                    Button("Continue with Email") {
+                        self.navigateToView = .emailLogin
+                        self.showEmailLogin = true
+                    }
+                    .foregroundColor(.white)
+                    .frame(width: 280, height: 45, alignment: .center)
+                    .background(Color.black)
+                    .cornerRadius(7.5)
+                    .fontWeight(.bold)
+                    
+                }
+                .padding(.bottom, 100)
             }
         }
     }

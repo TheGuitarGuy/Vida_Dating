@@ -14,7 +14,7 @@ import UIKit
 struct Vida_DatingApp: App {
     init() {
         FirebaseApp.configure()
-        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor(Color.vidaWhite)]
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white]
     }
     
     var body: some Scene {

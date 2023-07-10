@@ -10,7 +10,7 @@ import SwiftUI
 struct HomeView: View {
     var body: some View {
         ZStack{
-            Color(red: 30/255, green: 30/255, blue: 60/255)
+            Color(red: 54/255, green: 54/255, blue: 122/255)
                 .edgesIgnoringSafeArea(.all)
         }
     }

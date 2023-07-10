@@ -21,12 +21,11 @@ struct Message: Identifiable, Codable {
 
 struct CustomTitleView: View {
     let title: String
-    let color: Color
     
     var body: some View {
         Text(title)
             .font(.headline)
-            .foregroundColor(color)
+            .foregroundColor(.vidaWhite)
     }
     
     var titleString: String {
@@ -47,11 +46,11 @@ struct ConversationView: View {
     
     var body: some View {
         ZStack{
-            Color(red: 30/255, green: 30/255, blue: 60/255)
+            Color(red: 54/255, green: 54/255, blue: 122/255)
                 .edgesIgnoringSafeArea(.all)
             VStack {
                 Rectangle()
-                    .fill(Color(red: 30/255, green: 30/255, blue: 60/255))
+                    .fill(Color(red: 54/255, green: 54/255, blue: 122/255))
                     .frame(height: UIApplication.shared.windows.first?.safeAreaInsets.top ?? 0)
                     .edgesIgnoringSafeArea(.all)
                 ScrollView {
@@ -88,17 +87,20 @@ struct ConversationView: View {
                             .padding()
                             .background(Color.vidaPink)
                             .clipShape(Circle())
-                    })                }
+                    })
+                }
                 .padding()
             }
-            .navigationBarTitle(
-                CustomTitleView(title: conversation.name, color: .vidaWhite).titleString
-            )
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    CustomTitleView(title: conversation.name)
+                }
+            }
             .onAppear {
                 self.viewModel.fetchMessages()
             }
         }
-
     }
     
     private func sendMessage() {

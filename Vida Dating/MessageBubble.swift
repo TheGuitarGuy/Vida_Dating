@@ -34,8 +34,8 @@ struct MessageBubble: View {
                 HStack {
                     Text(message.text)
                         .padding()
-                        .background(isCurrentUserMessage() ? Color(red: 145 / 255, green: 0 / 255, blue: 254 / 255) : Color(red: 128/255, green: 134/255, blue: 157/255))
-                        .foregroundColor(isCurrentUserMessage() ? .vidaWhite : .vidaBackground)
+                        .background(isCurrentUserMessage() ? Color(red: 145 / 255, green: 0 / 255, blue: 254 / 255) : Color(red: 128/255, green: 134/255, blue: 200/255))
+                        .foregroundColor(isCurrentUserMessage() ? .vidaWhite : .vidaWhite)
                         .cornerRadius(30)
                 }
                 .frame(maxWidth: 300, alignment: isCurrentUserMessage() ? .trailing : .leading)

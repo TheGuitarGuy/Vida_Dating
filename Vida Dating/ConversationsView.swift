@@ -16,6 +16,7 @@ struct Conversation: Identifiable {
     let message: String
     let timestamp: Timestamp
     let members: [String]
+    let photoURLs: [String]
 }
 
 class ConversationsViewModel: ObservableObject {
@@ -45,7 +46,8 @@ class ConversationsViewModel: ObservableObject {
                 let message = data["lastMessage"] as? String ?? ""
                 let timestamp = data["timestamp"] as? Timestamp ?? Timestamp()
                 let members = data["members"] as? [String] ?? []
-                return Conversation(id: id, name: name, message: message, timestamp: timestamp, members: members)
+                let photoURLs = data["photoURLs"] as? [String] ?? []
+                return Conversation(id: id, name: name, message: message, timestamp: timestamp, members: members, photoURLs: photoURLs)
             }
                 
             DispatchQueue.main.async {
@@ -72,7 +74,7 @@ class ConversationsViewModel: ObservableObject {
             
             let randomMembers = documents
                 .shuffled()
-                .prefix(5)
+                .prefix(16)
                 .map { $0.documentID }
             
             let conversationData: [String: Any] = [
@@ -104,29 +106,56 @@ struct ConversationsView: View {
     
     var body: some View {
         NavigationView {
-            List(viewModel.conversations) { conversation in
-                NavigationLink(destination: ConversationView(conversation: conversation)) {
-                    VStack(alignment: .leading) {
-                        Text(conversation.name)
-                            .font(.headline)
-                        Text(conversation.message)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
+            ZStack {
+                Color(red: 54/255, green: 54/255, blue: 122/255)
+                    .edgesIgnoringSafeArea(.all)
+                
+                ScrollView {
+                    VStack(spacing: 0) {
+                        ForEach(viewModel.conversations) { conversation in
+                            NavigationLink(destination: ConversationView(conversation: conversation)) {
+                                VStack(alignment: .leading) {
+                                    Text(conversation.name)
+                                        .font(.headline)
+                                        .foregroundColor(.vidaWhite) // Change conversation title color to white
+                                    Text(conversation.message)
+                                        .font(.subheadline)
+                                        .foregroundColor(.vidaWhite) // Change conversation message color to white
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding()
+                                .background(Color(red: 54/255, green: 54/255, blue: 122/255)) // Make each cell background the same as the ZStack's
+                            }
+                            Divider()
+                                .background(Color.vidaWhite) // Change the divider color to white
+                                .padding(.horizontal)
+                        }
                     }
                 }
-            }
-            .navigationBarTitle("Conversations")
-            .navigationBarItems(trailing:Button(action: {
-                self.viewModel.createRandomGroupConversations()
-            }) {
-                Text("Create")
-                    .fontWeight(.bold)
-                    .foregroundColor(.blue)
-            })
-
-            .onAppear {
-                self.viewModel.fetchConversations()
+                
+                .navigationBarTitle("Your conversations", displayMode: .large)
+                .foregroundColor(.vidaWhite) // Change the "Your groups" text color to white
+                .navigationBarItems(trailing:
+                    Button(action: {
+                        self.viewModel.createRandomGroupConversations()
+                    }) {
+                        Text("Create")
+                            .fontWeight(.bold)
+                            .foregroundColor(.vidaWhite) // Change the "Create" button color to white
+                    }
+                )
+                .onAppear {
+                    self.viewModel.fetchConversations()
+                }
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle()) // Apply stack navigation view style
+        .accentColor(.vidaWhite) // Change the accent color to white
     }
 }
+
+
+
+
+
+

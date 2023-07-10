@@ -44,7 +44,7 @@ struct PersonalityTraitsView: View {
                 .ignoresSafeArea()
             VStack {
                 ScrollView {
-                    Image("Vida_Logomark")
+                    Image("Pod Logomark")
                         .resizable()
                         .frame(maxWidth: 100, maxHeight: 100)
                         .padding(.bottom, 20)

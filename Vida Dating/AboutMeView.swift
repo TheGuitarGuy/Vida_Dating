@@ -5,6 +5,7 @@
 //  Created by Kennion Gubler on 3/26/23.
 //
 
+
 import SwiftUI
 import Firebase
 import FirebaseFirestore
@@ -15,7 +16,7 @@ struct AboutMeView: View {
     @State private var showDetail = false
     @State private var navigateToPersonalityTraitsView = false
     let db = Firestore.firestore()
-    let user = Auth.auth().currentUser //Get the current user
+    let user = Auth.auth().currentUser // Get the current user
     
     init() {
         UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: Color.vidaBackground]
@@ -23,21 +24,21 @@ struct AboutMeView: View {
     
     var body: some View {
         ZStack {
-            Color(red: 30/255, green: 30/255, blue: 60/255)
+            Color(red: 54/255, green: 54/255, blue: 122/255)
                 .edgesIgnoringSafeArea(.all)
             
             VStack {
-                Image("Vida_Logomark")
+                Image("Pod Logomark")
                     .resizable()
                     .frame(maxWidth: 100, maxHeight: 100)
                     .padding(.vertical, 20)
-                Text("A fun fact about you:")
+                Text("Enter a short summary about you!")
                     .foregroundColor(.vidaWhite)
                     .font(.title)
                     .padding(.vertical, 20)
                 UITextViewWrapper(text: $bioText, characterCount: $characterCount)
-                Color(red: 30/255, green: 30/255, blue: 60/255)
-                    .multilineTextAlignment(.leading)
+                    .background(Color(red: 54/255, green: 54/255, blue: 122/255))
+                    .border(Color.white, width: 1)
                     .frame(height: 200)
                     .padding(10)
                     .overlay(
@@ -48,7 +49,6 @@ struct AboutMeView: View {
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing),
                         alignment: .bottomTrailing
                     )
-                    .border(Color.white, width: 1)
                 Button("Save") {
                     saveBioText()
                     navigateToPersonalityTraitsView = true
@@ -62,21 +62,19 @@ struct AboutMeView: View {
                             EmptyView()
                         })
                 )
-                        .padding()
-                        .padding(.horizontal, 30)
-                        .foregroundColor(.vidaWhite)
-                        .background(Color(red: 244/255, green: 11/255, blue: 114/255))
-                        .cornerRadius(30)
-                        .font(Font.system(size: 20))
-                        .bold()
-                        .cornerRadius(10)
-                        .padding(.vertical)
-                }
                 .padding()
-                .padding(.horizontal, 10)
+                .padding(.horizontal, 30)
+                .foregroundColor(.vidaWhite)
+                .background(Color(red: 244/255, green: 11/255, blue: 114/255))
+                .cornerRadius(30)
+                .font(Font.system(size: 20))
+                .bold()
+                .padding(.vertical)
+            }
+            .padding()
+            .padding(.horizontal, 10)
         }
-
-        }
+    }
     
     func saveBioText() {
         guard let user = user else {
@@ -91,7 +89,7 @@ struct AboutMeView: View {
         let db = Firestore.firestore()
         guard let userUid = Auth.auth().currentUser?.uid else { return }
         let userRef = db.collection("users").document(userUid)
-        userRef.setData(["bioText": bioText], merge: true){error in
+        userRef.setData(["bioText": bioText], merge: true) { error in
             if let error = error {
                 print("Error adding document: \(error)")
             } else {
@@ -112,8 +110,10 @@ struct UITextViewWrapper: UIViewRepresentable {
         textView.isUserInteractionEnabled = true
         textView.delegate = context.coordinator
         textView.textColor = UIColor.white
-        textView.backgroundColor = UIColor(red: 30/255, green: 30/255, blue: 60/255, alpha: 1.0)
+        textView.backgroundColor = UIColor(red: 54/255, green: 54/255, blue: 122/255, alpha: 1.0)
         textView.font = UIFont.systemFont(ofSize: 20)
+        textView.layer.borderWidth = 1
+        textView.layer.borderColor = UIColor.white.cgColor
         return textView
     }
     
@@ -145,6 +145,7 @@ struct UITextViewWrapper: UIViewRepresentable {
         }
     }
 }
+
 
 struct AboutMeView_Previews: PreviewProvider {
     static var previews: some View {

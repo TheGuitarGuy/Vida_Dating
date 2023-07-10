@@ -17,11 +17,11 @@ struct EmailLoginView: View {
     
     var body: some View {
         ZStack{
-            Color(red: 30/255, green: 30/255, blue: 60/255)
+            Color(red: 54/255, green: 54/255, blue: 122/255)
                 .edgesIgnoringSafeArea(.all)
             VStack (spacing: 30){
                 Spacer()
-                Image("Vida_Logomark")
+                Image("Pod Logomark")
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: 100)
@@ -64,7 +64,7 @@ struct EmailLoginView: View {
                         .background(Color(red: 244/255, green: 11/255, blue: 114/255))
                         .cornerRadius(30)
                         .font(Font.system(size: 20))
-                        .bold()
+                        .fontWeight(.bold)
                 }
                 .padding(.top, 20)
                 NavigationLink(destination: MainView(), isActive: $isLoggedIn) {
@@ -81,7 +81,7 @@ struct EmailLoginView: View {
                         Text("Sign Up")
                             .foregroundColor(.vidaPink)
                     }
-                    NavigationLink(destination: SignupView(), isActive: $showingSignup) {
+                    NavigationLink(destination: EmailSignupView(), isActive: $showingSignup) {
                         EmptyView()
                     }
                 }

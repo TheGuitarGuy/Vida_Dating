@@ -17,7 +17,7 @@ struct NameView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color(red: 30/255, green: 30/255, blue: 60/255)
+                Color(red: 54/255, green: 54/255, blue: 122/255)
                     .edgesIgnoringSafeArea(.all)
                 VStack {
                     Text("Enter your First Name:")

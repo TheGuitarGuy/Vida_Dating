@@ -25,23 +25,28 @@ struct PhotoUploadView: View {
     let vidaPink = Color(red: 231/255, green: 83/255, blue: 136/255)
     
     var body: some View {
-        VStack(spacing: 10) {
-            HStack(spacing: 10) {
-                ForEach(0..<3) { index in
-                    imageView(forIndex: index)
+        ZStack{
+            Color(red: 54/255, green: 54/255, blue: 122/255)
+                .edgesIgnoringSafeArea(.all)
+            VStack(spacing: 10) {
+                HStack(spacing: 10) {
+                    ForEach(0..<3) { index in
+                        imageView(forIndex: index)
+                    }
+                }
+                HStack(spacing: 10) {
+                    ForEach(3..<6) { index in
+                        imageView(forIndex: index)
+                    }
+                }
+                Button(action: {
+                    saveButtonTapped = true
+                    saveImagesToFirebase()
+                }) {
+                    Text("Save")
                 }
             }
-            HStack(spacing: 10) {
-                ForEach(3..<6) { index in
-                    imageView(forIndex: index)
-                }
-            }
-            Button(action: {
-                saveButtonTapped = true
-                saveImagesToFirebase()
-            }) {
-                Text("Save")
-            }
+
         }
         .onAppear {
             loadImageURLsFromFirestore()

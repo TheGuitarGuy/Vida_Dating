@@ -25,10 +25,10 @@ struct EmailSignupView: View {
         {
             ZStack
             {
-                Color(red: 30/255, green: 30/255, blue: 60/255)
+                Color(red: 54/255, green: 54/255, blue: 122/255)
                     .edgesIgnoringSafeArea(.all)
                 VStack {
-                    Image("Vida_Logomark")
+                    Image("Pod Logomark")
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: 100)
@@ -172,11 +172,23 @@ struct EmailSignupView: View {
 }
 extension Color {
     static let darkPink = Color(red: 208 / 255, green: 45 / 255, blue: 208 / 255)
-    static let vidaWhite = Color(red: 242 / 255, green: 245 / 255, blue: 255 / 255)
-    static let vidaBackground = Color(red: 30/255, green: 30/255, blue: 60/255)
+    static let vidaWhite = Color(red: 243 / 255, green: 234 / 255, blue: 244 / 255)
+    static let vidaBackground = Color(red: 54/255, green: 54/255, blue: 122/255)
     static let vidaPink = Color(red: 244/255, green: 11/255, blue: 114/255)
-    static let vidaOrange = Color(red: 244/255, green: 11/255, blue: 114/255)
+    static let vidaOrange = Color(red: 255/255, green: 186/255, blue: 83/255)
+    static let vidaBlue = Color(red: 69/255, green: 105/255, blue: 144/255)
+    
+    
 }
+extension UIColor {
+    static let darkPink = UIColor(red: 208 / 255, green: 45 / 255, blue: 208 / 255, alpha: 1.0)
+    static let vidaWhite = UIColor(red: 243 / 255, green: 234 / 255, blue: 244 / 255, alpha: 1.0)
+    static let vidaBackground = UIColor(red: 54/255, green: 54/255, blue: 122/255, alpha: 1.0)
+    static let vidaPink = UIColor(red: 244/255, green: 11/255, blue: 114/255, alpha: 1.0)
+    static let vidaOrange = UIColor(red: 255/255, green: 186/255, blue: 83/255, alpha: 1.0)
+    static let vidaBlue = UIColor(red: 69/255, green: 105/255, blue: 144/255, alpha: 1.0)
+}
+
 extension View {
     func underlineTextField() -> some View {
         self
