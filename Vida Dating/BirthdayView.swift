@@ -1,5 +1,5 @@
 //
-//  BithdayView.swift
+//  BirthdayView.swift
 //  Gild_Dating
 //
 //  Created by Kennion Gubler on 3/26/23.
@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import Firebase
 import FirebaseFirestore
+import SDWebImageSwiftUI
 
 struct BirthdayView: View {
     @State private var birthdate = Date()
@@ -48,8 +49,11 @@ struct BirthdayView: View {
                         if age < 18 {
                             showAlert = true
                         } else {
+                            // Set the default image for the user
+                            setDefaultImageForCurrentUser()
+                            
                             navigateToNameView = true
-                            setAgeInFirestore(age: age) // Add this line
+                            setAgeInFirestore(age: age)
                         }
                     }) {
                         Text("Continue")
@@ -74,7 +78,7 @@ struct BirthdayView: View {
             }
             .background(
                 NavigationLink(
-                    destination: NameView(),
+                    destination: NameView().navigationBarBackButtonHidden(true),
                     isActive: $navigateToNameView,
                     label: {
                         EmptyView()
@@ -89,10 +93,53 @@ struct BirthdayView: View {
         return components.year ?? 0
     }
     
-    private func setAgeInFirestore(age: Int) { // Add this method
+    private func setAgeInFirestore(age: Int) {
         guard let userUid = Auth.auth().currentUser?.uid else { return }
         let userRef = db.collection("users").document(userUid)
         userRef.setData(["age": age], merge: true)
+    }
+
+    private func setDefaultImageForCurrentUser() {
+        if let user = Auth.auth().currentUser {
+            // Replace with the actual URL of your default image in Firebase Storage
+            let defaultImageURL = "https://firebasestorage.googleapis.com/v0/b/vida-dating.appspot.com/o/default_image.png?alt=media&token=b2d37dd9-47f6-41f8-b071-54b4809d592b&_gl=1*15er7k5*_ga*MTM0MjM0MzMwMy4xNjk3ODIzNDk5*_ga_CW55HF8NVT*MTY5ODIwMzIwMS4xMy4xLjE2OTgyMDM2NTIuMzQuMC4w"
+
+            // Update Firestore document to add the default image URL to the photoURLs array
+            if let userUid = Auth.auth().currentUser?.uid {
+                let userRef = db.collection("users").document(userUid)
+                
+                // Fetch the existing photoURLs array from Firestore
+                userRef.getDocument { (document, error) in
+                    if let document = document, document.exists {
+                        if var photoURLs = document.data()?["photoURLs"] as? [String] {
+                            // Add the default image URL to the beginning of the array
+                            photoURLs.insert(defaultImageURL, at: 0)
+                            
+                            // Update the Firestore document with the updated photoURLs array
+                            userRef.setData(["photoURLs": photoURLs], merge: true) { error in
+                                if let error = error {
+                                    print("Error updating Firestore document: \(error.localizedDescription)")
+                                } else {
+                                    print("Default image URL added to photoURLs array successfully")
+                                }
+                            }
+                        } else {
+                            // If there are no existing photoURLs, create a new array with the default URL
+                            let photoURLs = [defaultImageURL]
+                            userRef.setData(["photoURLs": photoURLs], merge: true) { error in
+                                if let error = error {
+                                    print("Error updating Firestore document: \(error.localizedDescription)")
+                                } else {
+                                    print("Default image URL added to photoURLs array successfully")
+                                }
+                            }
+                        }
+                    } else {
+                        print("User document not found.")
+                    }
+                }
+            }
+        }
     }
 }
 

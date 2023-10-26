@@ -1,5 +1,3 @@
-
-
 import SwiftUI
 import Firebase
 import FirebaseAuth
@@ -28,13 +26,6 @@ struct EmailSignupView: View {
                 Color(red: 54/255, green: 54/255, blue: 122/255)
                     .edgesIgnoringSafeArea(.all)
                 VStack {
-                    Image("Pod Logomark")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: 100)
-                        .padding(.top, 25)
-                        .padding(.bottom, 50)
-                        .padding(.horizontal)
                     Text("Sign Up")
                         .font(.title)
                         .foregroundColor(.vidaWhite)
@@ -229,6 +220,3 @@ public struct PlaceholderStyle: ViewModifier {
             EmailSignupView()
         }
     }
-
-
-

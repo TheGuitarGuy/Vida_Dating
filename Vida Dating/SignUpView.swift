@@ -39,17 +39,24 @@ struct SignupView: View {
                         .padding(.bottom, 50)
                         .padding(.horizontal)
 
-                    NavigationLink(destination: MainView(), isActive: $showMain) {
+                    NavigationLink(destination: MainView()
+                                    .navigationBarBackButtonHidden(true), // Add this modifier
+                                   isActive: $showMain) {
                         EmptyView()
                     }
 
-                    NavigationLink(destination: BirthdayView(), isActive: $showBirthday) {
+                    NavigationLink(destination: BirthdayView()
+                                    .navigationBarBackButtonHidden(true), // Add this modifier
+                                   isActive: $showBirthday) {
                         EmptyView()
                     }
 
-                    NavigationLink(destination: EmailLoginView(), isActive: $showEmailLogin) {
+                    NavigationLink(destination: EmailLoginView()
+                                    .navigationBarBackButtonHidden(true), // Add this modifier
+                                   isActive: $showEmailLogin) {
                         EmptyView()
                     }
+
 
                     SignInWithAppleButton(.signIn, onRequest: { request in
                         let nonce = randomNonceString()

@@ -25,7 +25,7 @@ struct CustomTitleView: View {
     var body: some View {
         Text(title)
             .font(.headline)
-            .foregroundColor(.vidaWhite)
+            .foregroundColor(.white)
     }
     
     var titleString: String {
@@ -38,6 +38,9 @@ struct ConversationView: View {
     let db = Firestore.firestore()
     @State var messageText: String = ""
     @ObservedObject var viewModel: MessagesViewModel
+    
+    // Add a cachedMessages array to store fetched messages
+    @State var cachedMessages: [Message] = []
     
     init(conversation: Conversation) {
         self.conversation = conversation
@@ -98,7 +101,13 @@ struct ConversationView: View {
                 }
             }
             .onAppear {
-                self.viewModel.fetchMessages()
+                // Check if we have already fetched messages for this conversation
+                if cachedMessages.isEmpty {
+                    self.viewModel.fetchMessages()
+                } else {
+                    // If messages are cached, use them
+                    self.viewModel.messages = cachedMessages
+                }
             }
         }
     }
@@ -126,6 +135,9 @@ struct ConversationView: View {
             } else {
                 print("Message sent successfully")
                 self.messageText = ""
+                
+                // Add the sent message to the cache
+                self.cachedMessages.append(Message(id: messageId, text: messageText, senderId: currentUser.uid, timestamp: Timestamp()))
             }
         }
         let members = conversation.members.filter { $0 != currentUser.uid }
@@ -138,9 +150,6 @@ struct ConversationView: View {
             print("messageData: \(messageData)")
         }
     }
-
-
-
 }
 
 class MessagesViewModel: ObservableObject {
@@ -150,47 +159,6 @@ class MessagesViewModel: ObservableObject {
     
     init(conversation: Conversation) {
         self.conversation = conversation
-    }
-    
-    func sendMessage(_ messageText: String) {
-        guard let currentUser = Auth.auth().currentUser else {
-            print("No current user")
-            return
-        }
-        
-        let db = Firestore.firestore()
-        let message = Message(
-            id: UUID().uuidString,
-            text: messageText,
-            senderId: currentUser.uid,
-            timestamp: Timestamp()
-        )
-        let messageRef = db.collection("messages").document(message.id)
-        messageRef.setData(message.toDictionary()) { error in
-            if let error = error {
-                print("Error sending message: \(error)")
-            } else {
-                print("Message sent successfully")
-            }
-        }
-        
-        for memberId in conversation.members {
-            let userRef = db.collection("users").document(memberId)
-            let conversationRef = userRef.collection("conversations").document(conversation.id)
-            let conversationData: [String: Any] = [
-                "id": conversation.id,
-                "name": conversation.name,
-                "lastMessage": message.toDictionary(),
-                "members": conversation.members
-            ]
-            conversationRef.setData(conversationData) { error in
-                if let error = error {
-                    print("Error updating conversation: \(error)")
-                } else {
-                    print("Conversation updated successfully")
-                }
-            }
-        }
     }
     
     func fetchMessages() {
@@ -219,13 +187,13 @@ class MessagesViewModel: ObservableObject {
                 let timestamp = data["timestamp"] as? Timestamp ?? Timestamp(date: Date())
                 return Message(id: id, text: text, senderId: senderId, timestamp: timestamp)
             }
+            
+            // Update the view model's messages and cache
             self.messages = messages
         }
     }
-
     
     func stopListening() {
         self.listener?.remove()
     }
 }
-

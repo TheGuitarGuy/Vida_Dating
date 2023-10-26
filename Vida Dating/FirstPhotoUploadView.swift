@@ -4,7 +4,7 @@ import Firebase
 import FirebaseStorage
 import SDWebImageSwiftUI
 
-struct PhotoUploadView: View {
+struct FirstPhotoUploadView: View {
     @State var selectedImages: [UIImage?] = [nil, nil, nil, nil, nil, nil]
     @State private var coordinator: Coordinator?
     @State private var saveButtonTapped = false
@@ -312,10 +312,10 @@ struct PhotoUploadView: View {
     }
 
     private class Coordinator: NSObject, PHPickerViewControllerDelegate {
-        let parent: PhotoUploadView
+        let parent: FirstPhotoUploadView
         let index: Int
 
-        init(parent: PhotoUploadView, index: Int) {
+        init(parent: FirstPhotoUploadView, index: Int) {
             self.parent = parent
             self.index = index
         }

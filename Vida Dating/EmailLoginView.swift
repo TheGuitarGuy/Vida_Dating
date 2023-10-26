@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseAuth
+import Firebase
 
 struct EmailLoginView: View {
     @State private var email: String = ""
@@ -21,10 +22,10 @@ struct EmailLoginView: View {
                 .edgesIgnoringSafeArea(.all)
             VStack (spacing: 30){
                 Spacer()
-                Image("Pod Logomark")
+                Image("Pod_Logo_No_Slogan")
                     .resizable()
                     .scaledToFit()
-                    .frame(maxWidth: 100)
+                    .frame(maxWidth: 400)
                     .padding(.horizontal)
                 
                 Text("Login")
@@ -49,7 +50,7 @@ struct EmailLoginView: View {
                     loginUser(email: email, password: password) { result in
                         switch result {
                         case .success(let user):
-                            print("Logged in successfully: \(user.uid)")
+                            print("Logged in successfully: \(user!.uid)")
                             isLoggedIn = true
                         case .failure(let error):
                             print("Error logging in: \(error.localizedDescription)")
@@ -88,11 +89,11 @@ struct EmailLoginView: View {
                 Spacer()
             }
         }
-        }
+    }
 }
 
 
-func loginUser(email: String, password: String, completion: @escaping (Result<User, Error>) -> Void) {
+func loginUser(email: String, password: String, completion: @escaping (Result<User?, Error>) -> Void) {
     Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
         if let error = error {
             completion(.failure(error))
@@ -108,6 +109,7 @@ func loginUser(email: String, password: String, completion: @escaping (Result<Us
         completion(.success(user))
     }
 }
+
 
 struct EmailLoginView_Previews: PreviewProvider {
     static var previews: some View {

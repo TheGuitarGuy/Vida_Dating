@@ -28,11 +28,7 @@ struct AboutMeView: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack {
-                Image("Pod Logomark")
-                    .resizable()
-                    .frame(maxWidth: 100, maxHeight: 100)
-                    .padding(.vertical, 20)
-                Text("Enter a short summary about you!")
+                Text("Enter a short bio")
                     .foregroundColor(.vidaWhite)
                     .font(.title)
                     .padding(.vertical, 20)
@@ -56,7 +52,7 @@ struct AboutMeView: View {
                 }
                 .background(
                     NavigationLink(
-                        destination:PersonalityTraitsView(),
+                        destination:FirstPhotoUploadView(),
                         isActive: $navigateToPersonalityTraitsView,
                         label: {
                             EmptyView()

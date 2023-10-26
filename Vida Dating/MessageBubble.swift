@@ -35,7 +35,7 @@ struct MessageBubble: View {
                     Text(message.text)
                         .padding()
                         .background(isCurrentUserMessage() ? Color(red: 145 / 255, green: 0 / 255, blue: 254 / 255) : Color(red: 128/255, green: 134/255, blue: 200/255))
-                        .foregroundColor(isCurrentUserMessage() ? .vidaWhite : .vidaWhite)
+                        .foregroundColor(isCurrentUserMessage() ? .white : .white)
                         .cornerRadius(30)
                 }
                 .frame(maxWidth: 300, alignment: isCurrentUserMessage() ? .trailing : .leading)
